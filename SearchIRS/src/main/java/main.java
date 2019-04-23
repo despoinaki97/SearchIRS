@@ -19,12 +19,17 @@ public class main {
         try {
             LoadVocab.ReadFile(path);
             System.out.println(LoadVocab.word);
-            //System.out.println(LoadVocab.df);
-            //System.out.println(LoadVocab.offset);
+            System.out.println(LoadVocab.df);
+            System.out.println(LoadVocab.offset);
+
+            String SW = SearchWord.inputword();
+            int index = SearchWord.searchvocab(SW);
+            System.out.println(index);
 
         } catch (IOException e) {
             System.err.println("The given file could not be found.");
         }
+
     }
 
 }
