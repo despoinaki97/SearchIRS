@@ -36,15 +36,23 @@ public class LoadVocab {
         BufferedReader br = new BufferedReader(fr);
         String line;
         while ((line = br.readLine()) != null) {
+            
             StringTokenizer tokenizer = new StringTokenizer(line, " ");
+            System.out.println(tokenizer.countTokens());
             String one = tokenizer.nextToken();
             word.add(one);
             String two = tokenizer.nextToken();
             int docf = Integer.parseInt(two);
             df.add(docf);
-            String thr = tokenizer.nextToken();
-            long offs = Long.parseLong(thr);
-            offset.add(offs);
+            if(tokenizer.countTokens()>2){
+                String thr = tokenizer.nextToken();
+                long offs = Long.parseLong(thr);
+                offset.add(offs);
+            }else{
+                long zero=0;
+                offset.add(zero);
+            }         
+
 
         }
     }
