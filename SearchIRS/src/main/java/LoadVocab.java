@@ -38,13 +38,13 @@ public class LoadVocab {
         while ((line = br.readLine()) != null) {
             
             StringTokenizer tokenizer = new StringTokenizer(line, " ");
-            System.out.println(tokenizer.countTokens());
+            int count = tokenizer.countTokens();
             String one = tokenizer.nextToken();
             word.add(one);
             String two = tokenizer.nextToken();
             int docf = Integer.parseInt(two);
             df.add(docf);
-            if(tokenizer.countTokens()>2){
+            if(count>2){
                 String thr = tokenizer.nextToken();
                 long offs = Long.parseLong(thr);
                 offset.add(offs);
