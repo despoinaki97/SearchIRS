@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.io.*;
+import java.util.StringTokenizer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,18 +18,33 @@ import java.io.*;
  */
 public class LoadVocab {
 
-    public ArrayList<String> word;
-    public ArrayList<Integer> df;
-    public ArrayList<Integer> offset;
+    public static ArrayList<String> word;
+    public static ArrayList<Integer> df;
+    public static ArrayList<Long> offset;
+
+    LoadVocab() {
+        word = new ArrayList<>();
+        df = new ArrayList<>();
+        offset = new ArrayList<>();
+
+    }
 
     public static void ReadFile(String path) throws IOException {
-
+        LoadVocab LV = new LoadVocab();
         File file = new File(path);
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         String line;
         while ((line = br.readLine()) != null) {
-            System.out.println(line);
+            StringTokenizer tokenizer = new StringTokenizer(line, " ");
+            String one = tokenizer.nextToken();
+            word.add(one);
+            String two = tokenizer.nextToken();
+            int docf = Integer.parseInt(two);
+            df.add(docf);
+            String thr = tokenizer.nextToken();
+            long offs = Long.parseLong(thr);
+            offset.add(offs);
 
         }
     }

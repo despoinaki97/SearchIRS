@@ -14,10 +14,13 @@ import java.io.UnsupportedEncodingException;
 public class main {
 
     public static void main(String[] args) throws UnsupportedEncodingException, IOException {
-        String path = "CollectionIndex\\VocabularyFile.txt";
+        String path = "VocabularyFile.txt";
 
         try {
             LoadVocab.ReadFile(path);
+            System.out.println(LoadVocab.word);
+            //System.out.println(LoadVocab.df);
+            //System.out.println(LoadVocab.offset);
 
         } catch (IOException e) {
             System.err.println("The given file could not be found.");
