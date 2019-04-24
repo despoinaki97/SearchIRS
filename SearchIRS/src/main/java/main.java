@@ -5,6 +5,8 @@
  */
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -18,16 +20,18 @@ public class main {
 
         try {
             LoadVocab.ReadFile(path);
-            System.out.println(LoadVocab.word);
-            System.out.println(LoadVocab.df);
-            System.out.println(LoadVocab.offset);
+            //System.out.println(LoadVocab.word);
+            //System.out.println(LoadVocab.df);
+            //System.out.println(LoadVocab.offset);
 
             String SW = SearchWord.inputword();
             int index = SearchWord.searchvocab(SW);
-            System.out.println(index);
-
+            ArrayList<String> filePaths = SearchWord.searchfiles(index);
+            for(int i=0;i<filePaths.size();i++){
+                System.out.println(filePaths.get(i));
+            }
         } catch (IOException e) {
-            System.err.println("The given file could not be found.");
+            System.err.println(Arrays.toString(e.getStackTrace()));
         }
 
     }

@@ -1,9 +1,11 @@
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -43,13 +45,36 @@ public class SearchWord {
         long offsone = LoadVocab.offset.get(index);
         int df = LoadVocab.df.get(index);
         long offstwo = LoadVocab.offset.get(index++);
-        RandomAccessFile posting = new RandomAccessFile("PostingFile.txt", "r");
+        RandomAccessFile posting = new RandomAccessFile("src/main/java/CollectionIndex/PostingFile.txt", "r");
         posting.seek(offsone);
         String line;
+        System.out.println(df);
         for (i = 0; i < df; i++) {
-            line = posting.readLine();
+            
+            line = posting.readUTF();
+            
+            StringTokenizer stringToken = new StringTokenizer(line," ");
+            String currentToken=stringToken.nextToken();
+            String document ="";
+            while(!isNumeric(currentToken)){
+                document += currentToken+" ";
+                currentToken= stringToken.nextToken();
+            }
+            docs.add(document);
+            
         }
-        posting.seek(offstwo);
+        return docs;
+        //posting.seek(offstwo);
+        
     }
 
+    
+    public static boolean isNumeric(String str) { 
+        try {  
+          Double.parseDouble(str);  
+          return true;
+        } catch(NumberFormatException e){  
+          return false;  
+        }  
+    }
 }
