@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import mitos.stemmer.Stemmer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
