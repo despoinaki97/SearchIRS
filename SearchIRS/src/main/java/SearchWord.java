@@ -1,7 +1,6 @@
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -19,17 +18,17 @@ import java.util.StringTokenizer;
  */
 public class SearchWord {
 
-    public static String Sword;
+    public static String Query;
     public static ArrayList<String> foundfiles;
-
+    public static int numberOfFiles;
+    public static double docNormal;
     public static String inputword() {
         Scanner user_input = new Scanner(System.in);
-        Sword = user_input.next();
-        return Sword;
+        Query = user_input.nextLine();
+        return Query;
     }
 
     public static int searchvocab(String sword) {
-        sword = Sword;
         int index = Collections.binarySearch(LoadVocab.word, sword);
         if (index < 0) {
             System.out.println("404 Word not found");
@@ -39,16 +38,19 @@ public class SearchWord {
         }
     }
 
-    public static ArrayList<String> searchfiles(int index) throws IOException {
+    public static ArrayList<String> searchfiles(int index,String w) throws IOException {
         int i = 0;
-        ArrayList<String> docs = new ArrayList<>();
+        double total=0;
+        ArrayList<String> files=new ArrayList<>();
         long offsone = LoadVocab.offset.get(index);
         int df = LoadVocab.df.get(index);
         long offstwo = LoadVocab.offset.get(index++);
-        RandomAccessFile posting = new RandomAccessFile("src/main/java/CollectionIndex/PostingFile.txt", "r");
+        RandomAccessFile posting = new RandomAccessFile("..\\..\\CollectionIndex\\PostingFile.txt", "r");
+        RandomAccessFile dFile = new RandomAccessFile("..\\..\\CollectionIndex\\DocumentsFile.txt", "r");
+        
         posting.seek(offsone);
         String line;
-        System.out.println(df);
+        //System.out.println(df);
         for (i = 0; i < df; i++) {
             
             line = posting.readUTF();
@@ -60,18 +62,51 @@ public class SearchWord {
                 document += currentToken+" ";
                 currentToken= stringToken.nextToken();
             }
-            docs.add(document);
+            
+            files.add(document);
+            
+            double tf=Double.parseDouble(currentToken);
+            String positions=stringToken.nextToken();
+            long docOffset = Long.parseLong(stringToken.nextToken().trim());
+            dFile.seek(docOffset);
+            String dNormal=" ";
+            StringTokenizer documentToken = new StringTokenizer(dFile.readLine()," ");
+            documentToken.nextToken();
+            
+            while(!isNumeric(dNormal)){
+                dNormal = documentToken.nextToken();
+            }
+            docNormal = Double.parseDouble(dNormal);
+            double MaxFreq =Double.parseDouble(documentToken.nextToken());
+            
+            if(MaxFreq!=0)
+                tf = tf/MaxFreq;
+            else
+                System.err.println("MaxFreq was 0. Sth went really bad");
+            double iDF =  numberOfFiles/df;
+            
+            double weight = tf*log2(iDF);
+            
+            double qTF=QueryInfo.words.get(w).doubleValue()/ (new Integer(QueryInfo.MaxFreq)).doubleValue();
+            double qWeight = qTF*log2(iDF);
+            
+            total= total + weight*qWeight;
             
         }
-        return docs;
+        return files;
         //posting.seek(offstwo);
         
     }
 
     
+     private static double log2(double n)
+    {
+        return (Math.log(n) / Math.log(2));
+    }
+    
     public static boolean isNumeric(String str) { 
         try {  
-          Double.parseDouble(str);  
+          Double.parseDouble(str);
           return true;
         } catch(NumberFormatException e){  
           return false;  
