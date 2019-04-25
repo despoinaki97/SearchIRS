@@ -46,7 +46,7 @@ public class main {
             
             for(String w: QueryInfo.words.keySet()){
                 int index = SearchWord.searchvocab(w);
-                normals.add(SearchWord.searchfiles(index,w));
+                //    normals.add(SearchWord.searchfiles(index,w));
             }
             System.out.println(normals);
         } catch (IOException e) {
