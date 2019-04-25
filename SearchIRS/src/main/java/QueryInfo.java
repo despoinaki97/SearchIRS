@@ -15,13 +15,10 @@ import java.util.Map;
  */
 public class QueryInfo {
     public static Map<String,Integer> words;
-    public static ArrayList<Double> weights;
-    public static double Normal;
     public static int MaxFreq;
     static{
         MaxFreq=0;
         words=new HashMap<>();
-        weights = new ArrayList<>();
     }
     
     public static void AddWord(String w){
@@ -36,7 +33,19 @@ public class QueryInfo {
         }
     }
     
-    public static void CalculateNormal(){
+    public static double CalculateNormal(int df){
+        double total=0;
+        for (Integer k : words.values()){
+            double tf= k.doubleValue()/(double)MaxFreq;
+            double iDF = (double)SearchWord.numberOfFiles /(double)df;
+            iDF = Log2(iDF);
+            total= total+Math.pow(iDF*tf, 2); 
+        }
+        return Math.sqrt(total);
         
+    }
+    
+    private static double Log2(double n){
+        return (Math.log(n) / Math.log(2));
     }
 }
