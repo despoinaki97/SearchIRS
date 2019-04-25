@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -38,10 +39,10 @@ public class SearchWord {
         }
     }
 
-    public static ArrayList<String> searchfiles(int index,String w) throws IOException {
+    public static HashMap<String,Double> searchfiles(int index,String w) throws IOException {
         int i = 0;
         double total=0;
-        ArrayList<String> files=new ArrayList<>();
+        HashMap<String,Double> weights=new HashMap<>();
         long offsone = LoadVocab.offset.get(index);
         int df = LoadVocab.df.get(index);
         long offstwo = LoadVocab.offset.get(index++);
@@ -62,8 +63,6 @@ public class SearchWord {
                 document += currentToken+" ";
                 currentToken= stringToken.nextToken();
             }
-            
-            files.add(document);
             
             double tf=Double.parseDouble(currentToken);
             String positions=stringToken.nextToken();
@@ -90,10 +89,12 @@ public class SearchWord {
             double qTF=QueryInfo.words.get(w).doubleValue()/ (new Integer(QueryInfo.MaxFreq)).doubleValue();
             double qWeight = qTF*log2(iDF);
             
-            total= total + weight*qWeight;
+            double fWeight = qWeight*weight/(QueryInfo.CalculateNormal(df)*docNormal);
+            weights.put(document, fWeight);
             
         }
-        return files;
+        
+        return weights;
         //posting.seek(offstwo);
         
     }
