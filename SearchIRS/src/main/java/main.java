@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
@@ -81,16 +85,32 @@ public class main {
                     LinkedHashMap::new));
             
             
+            try {
+                File folderRes = new File("..\\..\\Results\\");
+                folderRes.mkdir();
+            } catch(Exception e) {
+               e.printStackTrace();
+            }
+            
+            String fileNameRes = "..\\..\\Results\\Results.txt";
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileNameRes));
+            writer.write("");
             fScores_sorted.keySet().forEach((k) -> {
-                System.out.print(k+"  Scores: ");
-                System.out.printf("%.3f", fScores.get(k));
-                System.out.println();
+                try {
+                    
+                    writer.write(k+"  Scores: ");
+                    writer.write(fScores.get(k).toString());
+                    writer.write("\n");
+                } catch (IOException ex) {
+                    Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             });
+            writer.close();
         } catch (IOException e) {
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
-
+        
     }
 
 }
