@@ -23,16 +23,21 @@ public class SearchWord {
     public static ArrayList<String> foundfiles;
     public static int numberOfFiles;
     public static double docNormal;
+    
     public static String inputword() {
+        System.out.println("Please give topic type:");
+        
         Scanner user_input = new Scanner(System.in);
-        Query = user_input.nextLine();
+        String topic  = user_input.nextLine();
+        System.out.println("Please give summary or description:");
+        String sum = user_input.nextLine();
+        Query = topic +" "+sum+" "+topic;
         return Query;
     }
 
     public static int searchvocab(String sword) {
         int index = Collections.binarySearch(LoadVocab.word, sword);
         if (index < 0) {
-            System.out.println("404 Word not found");
             return -1;
         } else {
             return index;
@@ -51,12 +56,10 @@ public class SearchWord {
         
         posting.seek(offsone);
         String line;
-        //System.out.println(df);
         for (i = 0; i < df; i++) {
             
             line = posting.readUTF();
-            
-            StringTokenizer stringToken = new StringTokenizer(line," ");
+            StringTokenizer stringToken = new StringTokenizer(line.trim()," ");
             String currentToken=stringToken.nextToken();
             String document ="";
             while(!isNumeric(currentToken)){
@@ -69,7 +72,9 @@ public class SearchWord {
             long docOffset = Long.parseLong(stringToken.nextToken().trim());
             dFile.seek(docOffset);
             String dNormal=" ";
-            StringTokenizer documentToken = new StringTokenizer(dFile.readLine()," ");
+            String line2 = dFile.readLine();
+            
+            StringTokenizer documentToken = new StringTokenizer(line2.trim()," ");
             documentToken.nextToken();
             
             while(!isNumeric(dNormal)){

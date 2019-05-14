@@ -51,9 +51,11 @@ public class main {
             HashMap<String,Double> fScores= new HashMap<>();
             for(String w: QueryInfo.words.keySet()){
                 int index = SearchWord.searchvocab(w);
-                //    normals.add(SearchWord.searchfiles(index,w));
-                scores.add(SearchWord.searchfiles(index, w));
-                
+                if(index>-1){
+                    scores.add(SearchWord.searchfiles(index, w));
+                }else{
+                    scores.add(new HashMap<String,Double>());
+                }
             }
             
             for(int i=0;i<scores.size();i++){
