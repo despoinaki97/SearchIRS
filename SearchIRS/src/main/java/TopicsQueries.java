@@ -26,7 +26,7 @@ public class TopicsQueries {
         Description = "";
     }
 
-    public static void readtopics() throws Exception {
+    public static ArrayList<Topic> readtopics() throws Exception {
         TopicsQueries TQ = new TopicsQueries();
         ArrayList<Topic> topics = TopicsReader.readTopics("topics.xml");
         for (Topic topic : topics) {
@@ -34,8 +34,7 @@ public class TopicsQueries {
             Type = topic.getType();
             Summary = topic.getSummary();
             Description = topic.getDescription();
-            System.out.println("Number :" + Number + "Type :" + Type + "Summary :" + Summary);
-
         }
+        return topics;
     }
 }
