@@ -28,7 +28,7 @@ public class TopicsQueries {
 
     public static ArrayList<Topic> readtopics() throws Exception {
         TopicsQueries TQ = new TopicsQueries();
-        ArrayList<Topic> topics = TopicsReader.readTopics("topics.xml");
+        ArrayList<Topic> topics = TopicsReader.readTopics("../../Resources/topics.xml");
         for (Topic topic : topics) {
             Number = topic.getNumber();
             Type = topic.getType();

@@ -47,8 +47,12 @@ public class main {
         }catch(IOException e){
             
         }
-        String fileNameRes = "..\\..\\Results\\Results.txt";
-        BufferedWriter writer = new BufferedWriter(new FileWriter(fileNameRes));
+        String folderNameRes = "..\\..\\Results\\";
+        File folderF = new File(folderNameRes);
+        if(!folderF.exists())
+            folderF.mkdir();
+        
+        BufferedWriter writer = new BufferedWriter(new FileWriter(folderNameRes+"Results.txt"));
             
         Map<Integer,Map<String,Double>> allScores = new HashMap<>();
         try {
@@ -62,9 +66,10 @@ public class main {
                 System.err.println(e.getMessage());
             }
             for(int q=0;q<topics.size();q++){
+                System.out.println("TopicNO:"+ q);
                 String tSum=topics.get(q).getSummary();
                 String tType=topics.get(q).getType().toString();
-                String query = tType + tSum + tType;
+                String query = tSum;
                 Parser.tokenize(query);
                 
                 ArrayList<HashMap<String,Double>> scores = new ArrayList<>();
@@ -95,10 +100,17 @@ public class main {
                             fScores.put(k, finalScore);
                     }
                 }
+                QueryInfo.words.clear();
                 allScores.put(q, fScores);
             }
             } catch (IOException e) {
-                System.err.println(Arrays.toString(e.getStackTrace()));
+                System.err.println(e.getMessage());
+            }
+            
+            for(int i=0;i<30;i++){
+                if(allScores.get(i).isEmpty()){
+                    allScores.remove(i);
+                }
             }
             ArrayList<myfileEntry> allScores_sorted = new ArrayList<>();
             while(!allScores.isEmpty()){
@@ -122,18 +134,13 @@ public class main {
                 fE = new myfileEntry(maxi,maxk,max);
                 allScores_sorted.add(fE);
                 
+               
                 allScores.get(maxi).remove(maxk,max);
                 if(allScores.get(maxi).isEmpty()){
                     allScores.remove(maxi);
-                }
+                }   
+                
             }
-            try {
-                File folderRes = new File("..\\..\\Results\\");
-                folderRes.mkdir();
-            } catch(Exception e) {
-               e.printStackTrace();
-            }
-
             
             
             for(int i=0;i<allScores_sorted.size();i++){

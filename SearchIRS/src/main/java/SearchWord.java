@@ -69,7 +69,10 @@ public class SearchWord {
             
             double tf=Double.parseDouble(currentToken);
             String positions=stringToken.nextToken();
+            //StringTokenizer token2= new StringTokenizer(positions,"]");
+            //positions = token2.nextToken();
             long docOffset = Long.parseLong(stringToken.nextToken().trim());
+            //System.out.println(docOffset);
             dFile.seek(docOffset);
             String dNormal=" ";
             String line2 = dFile.readLine();
